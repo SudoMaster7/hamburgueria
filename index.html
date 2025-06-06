@@ -1,0 +1,1227 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>BurgerMaster - Os melhores hambúrgueres da cidade</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#FF5A00',
+                        secondary: '#FF8C42',
+                        accent: '#FFBF00',
+                        dark: '#1E1E24',
+                        light: '#F7F7FF'
+                    }
+                }
+            }
+        }
+    </script>
+    <style>
+        .item-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 25px -5px rgba(255, 90, 0, 0.3);
+        }
+        .cart-item-enter {
+            animation: slideIn 0.3s forwards;
+        }
+        .cart-item-exit {
+            animation: slideOut 0.3s forwards;
+        }
+        @keyframes slideIn {
+            from {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+            to {
+                transform: translateX(0);
+                opacity: 1;
+            }
+        }
+        @keyframes slideOut {
+            from {
+                transform: translateX(0);
+                opacity: 1;
+            }
+            to {
+                transform: translateX(50px);
+                opacity: 0;
+            }
+        }
+    </style>
+</head>
+<body class="bg-light text-dark font-sans">
+    <!-- Header/Navbar -->
+    <header class="bg-white shadow-md sticky top-0 z-50">
+        <div class="container mx-auto px-4 py-3 flex justify-between items-center">
+            <div class="flex items-center">
+                <span class="text-3xl font-bold text-primary mr-1">🍔</span>
+                <h1 class="text-2xl font-bold text-primary">Burger<span class="text-secondary">Master</span></h1>
+            </div>
+            <div class="hidden md:flex space-x-8">
+                <a href="#home" class="text-primary font-medium hover:text-secondary transition">Início</a>
+                <a href="#menu" class="text-dark font-medium hover:text-primary transition">Cardápio</a>
+                <a href="#about" class="text-dark font-medium hover:text-primary transition">Sobre Nós</a>
+                <a href="#contact" class="text-dark font-medium hover:text-primary transition">Contato</a>
+            </div>
+            <div class="flex items-center">
+                <button id="cart-button" class="relative p-2 rounded-full hover:bg-gray-100">
+                    <i class="fas fa-shopping-cart text-xl text-primary"></i>
+                    <span id="cart-count" class="absolute -top-1 -right-1 bg-accent text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center">0</span>
+                </button>
+                <button id="mobile-menu-button" class="ml-4 p-2 md:hidden">
+                    <i class="fas fa-bars text-xl text-primary"></i>
+                </button>
+            </div>
+        </div>
+        <!-- Mobile Menu -->
+        <div id="mobile-menu" class="hidden md:hidden bg-white border-t-2 border-gray-100">
+            <div class="container mx-auto px-4 py-2 flex flex-col">
+                <a href="#home" class="py-2 text-dark font-medium hover:text-primary transition">Início</a>
+                <a href="#menu" class="py-2 text-dark font-medium hover:text-primary transition">Cardápio</a>
+                <a href="#about" class="py-2 text-dark font-medium hover:text-primary transition">Sobre Nós</a>
+                <a href="#contact" class="py-2 text-dark font-medium hover:text-primary transition">Contato</a>
+            </div>
+        </div>
+    </header>
+
+    <!-- Hero Section -->
+    <section id="home" class="bg-gradient-to-r from-primary to-secondary text-white py-16">
+        <div class="container mx-auto px-4 flex flex-col md:flex-row items-center">
+            <div class="md:w-1/2 mb-8 md:mb-0">
+                <h2 class="text-4xl md:text-5xl font-bold mb-4">Os Hambúrgueres mais <span class="text-accent">incríveis</span> da cidade!</h2>
+                <p class="text-xl mb-6">Experimente nossos hambúrgueres artesanais feitos com ingredientes frescos e selecionados.</p>
+                <div class="flex flex-col sm:flex-row space-y-3 sm:space-y-0 sm:space-x-4">
+                    <a href="#menu" class="bg-accent hover:bg-yellow-500 text-dark font-bold py-3 px-6 rounded-full transition text-center">Ver Cardápio</a>
+                    <a href="#promo" class="bg-transparent border-2 border-white hover:bg-white hover:text-dark font-bold py-3 px-6 rounded-full transition text-center">Promoções</a>
+                </div>
+            </div>
+            <div class="md:w-1/2 flex justify-center">
+                <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Hambúrguer Master" class="w-full max-w-md rounded-xl shadow-2xl">
+            </div>
+        </div>
+    </section>
+
+    <!-- Promo Section -->
+    <section id="promo" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">🔥 Promoções Especiais 🔥</h2>
+            <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+                <div class="bg-gradient-to-br from-primary to-secondary p-1 rounded-xl shadow-lg">
+                    <div class="bg-white rounded-xl p-6 h-full">
+                        <div class="relative h-40 mb-4 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1559844453-3a29f6f32ade?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Combo Família" class="w-full h-full object-cover">
+                            <div class="absolute top-2 right-2 bg-accent text-dark font-bold px-3 py-1 rounded-full text-sm">20% OFF</div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Combo Família</h3>
+                        <p class="text-gray-600 mb-4">4 hambúrgueres artesanais, 2 porções de batatas, 4 refrigerantes.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-primary font-bold text-xl">R$ 89,90</span>
+                            <span class="text-gray-400 line-through">R$ 112,90</span>
+                        </div>
+                        <button class="mt-4 bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-primary to-secondary p-1 rounded-xl shadow-lg">
+                    <div class="bg-white rounded-xl p-6 h-full">
+                        <div class="relative h-40 mb-4 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1565299507177-b0ac66763828?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Combo Duplo" class="w-full h-full object-cover">
+                            <div class="absolute top-2 right-2 bg-accent text-dark font-bold px-3 py-1 rounded-full text-sm">15% OFF</div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Combo Duplo</h3>
+                        <p class="text-gray-600 mb-4">2 hambúrgueres artesanais, 1 porção de batatas, 2 refrigerantes.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-primary font-bold text-xl">R$ 54,90</span>
+                            <span class="text-gray-400 line-through">R$ 64,90</span>
+                        </div>
+                        <button class="mt-4 bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+                
+                <div class="bg-gradient-to-br from-primary to-secondary p-1 rounded-xl shadow-lg">
+                    <div class="bg-white rounded-xl p-6 h-full">
+                        <div class="relative h-40 mb-4 rounded-lg overflow-hidden">
+                            <img src="https://images.unsplash.com/photo-1563805042-7684c019e1cb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Lanche do Dia" class="w-full h-full object-cover">
+                            <div class="absolute top-2 right-2 bg-accent text-dark font-bold px-3 py-1 rounded-full text-sm">30% OFF</div>
+                        </div>
+                        <h3 class="text-xl font-bold mb-2">Lanche do Dia</h3>
+                        <p class="text-gray-600 mb-4">Hambúrguer artesanal + batata média + refrigerante.</p>
+                        <div class="flex justify-between items-center">
+                            <span class="text-primary font-bold text-xl">R$ 24,90</span>
+                            <span class="text-gray-400 line-through">R$ 35,90</span>
+                        </div>
+                        <button class="mt-4 bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full">
+                            Adicionar ao Carrinho
+                        </button>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Menu Section -->
+    <section id="menu" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">🍔 Nosso Cardápio</h2>
+            
+            <!-- Menu Categories -->
+            <div class="flex overflow-x-auto pb-4 mb-8 scrollbar-hide">
+                <button class="category-btn px-6 py-2 mr-2 rounded-full font-medium bg-primary text-white" data-category="burgers">Hambúrgueres</button>
+                <button class="category-btn px-6 py-2 mr-2 rounded-full font-medium bg-gray-200 hover:bg-gray-300 transition" data-category="portions">Porções</button>
+                <button class="category-btn px-6 py-2 mr-2 rounded-full font-medium bg-gray-200 hover:bg-gray-300 transition" data-category="drinks">Bebidas</button>
+                <button class="category-btn px-6 py-2 rounded-full font-medium bg-gray-200 hover:bg-gray-300 transition" data-category="desserts">Sobremesas</button>
+            </div>
+            
+            <!-- Burgers Category (Default) -->
+            <div id="burgers" class="menu-category">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Burger 1 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1568901346375-23c9450c58cd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Master Burger" class="w-full h-full object-cover">
+                            <div class="absolute bottom-2 right-2 bg-primary text-white font-bold px-3 py-1 rounded-full text-sm">DESTAQUE</div>
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Master Burger</h3>
+                                <span class="text-lg font-bold text-primary">R$ 32,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Pão brioche, hambúrguer 180g, queijo cheddar, bacon crocante, alface, tomate e molho especial.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Master Burger" 
+                                    data-price="32.90"
+                                    data-id="burger-1">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="mt-2 text-primary font-medium text-sm w-full text-center hover:underline" onclick="openCustomizationModal('burger-1')">
+                                Personalizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Burger 2 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1561758033-d89a9ad46330?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Cheese Bacon" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Cheese Bacon</h3>
+                                <span class="text-lg font-bold text-primary">R$ 28,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Pão australiano, hambúrguer 160g, queijo prato, bacon crocante, cebola caramelizada e maionese da casa.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Cheese Bacon" 
+                                    data-price="28.90"
+                                    data-id="burger-2">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="mt-2 text-primary font-medium text-sm w-full text-center hover:underline" onclick="openCustomizationModal('burger-2')">
+                                Personalizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Burger 3 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1603064752734-4c48eff53d05?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Vegetariano" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Vegetariano</h3>
+                                <span class="text-lg font-bold text-primary">R$ 26,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Pão integral, hambúrguer de grão-de-bico, queijo branco, abobrinha grelhada, berinjela e molho de iogurte.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Vegetariano" 
+                                    data-price="26.90"
+                                    data-id="burger-3">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="mt-2 text-primary font-medium text-sm w-full text-center hover:underline" onclick="openCustomizationModal('burger-3')">
+                                Personalizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Burger 4 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1553979459-222e0da2d17a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Chicken Crispy" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Chicken Crispy</h3>
+                                <span class="text-lg font-bold text-primary">R$ 29,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Pão brioche, filé de frango empanado, queijo cheddar, alface, tomate e molho especial.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Chicken Crispy" 
+                                    data-price="29.90"
+                                    data-id="burger-4">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="mt-2 text-primary font-medium text-sm w-full text-center hover:underline" onclick="openCustomizationModal('burger-4')">
+                                Personalizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Burger 5 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1586190848861-99aa4a171e90?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="BBQ Burger" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">BBQ Burger</h3>
+                                <span class="text-lg font-bold text-primary">R$ 31,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Pão de hambúrguer tradicional, hambúrguer 180g, queijo prato, cebola crispy, picles e molho barbecue.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="BBQ Burger" 
+                                    data-price="31.90"
+                                    data-id="burger-5">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="mt-2 text-primary font-medium text-sm w-full text-center hover:underline" onclick="openCustomizationModal('burger-5')">
+                                Personalizar
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Burger 6 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1606755962773-d324aadc039d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Duplo Cheddar" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Duplo Cheddar</h3>
+                                <span class="text-lg font-bold text-primary">R$ 36,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Pão brioche, 2 hambúrgueres 120g, dupla porção de cheddar, cebola roxa e molho especial.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Duplo Cheddar" 
+                                    data-price="36.90"
+                                    data-id="burger-6">
+                                Adicionar ao Carrinho
+                            </button>
+                            <button class="mt-2 text-primary font-medium text-sm w-full text-center hover:underline" onclick="openCustomizationModal('burger-6')">
+                                Personalizar
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Portions Category (Hidden by default) -->
+            <div id="portions" class="menu-category hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Portion 1 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1541592106381-b31e9677c0e5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Batata Frita" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Batata Frita</h3>
+                                <span class="text-lg font-bold text-primary">R$ 15,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Porção de batata frita crocante servida com molhos especiais.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Batata Frita" 
+                                    data-price="15.90"
+                                    data-id="portion-1">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Portion 2 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1529562380208-52f8dce9eb6c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Onion Rings" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Onion Rings</h3>
+                                <span class="text-lg font-bold text-primary">R$ 18,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Anéis de cebola empanados e crocantes, acompanhados de molho barbecue.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Onion Rings" 
+                                    data-price="18.90"
+                                    data-id="portion-2">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Portion 3 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1555396273-367ea4eb4db5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Nachos" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Nachos</h3>
+                                <span class="text-lg font-bold text-primary">R$ 22,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Nachos crocantes com queijo derretido, guacamole e pico de gallo.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Nachos" 
+                                    data-price="22.90"
+                                    data-id="portion-3">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Portion 4 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1604134967494-8a9ed3adea0d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Batata Doce" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Batata Doce</h3>
+                                <span class="text-lg font-bold text-primary">R$ 17,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Porção de batata doce frita crocante com molho especial.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Batata Doce" 
+                                    data-price="17.90"
+                                    data-id="portion-4">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Drinks Category (Hidden by default) -->
+            <div id="drinks" class="menu-category hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Drink 1 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1561758293-ad6be2c01e6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Refrigerante" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Refrigerante Lata</h3>
+                                <span class="text-lg font-bold text-primary">R$ 6,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Lata 350ml - Coca-Cola, Guaraná, Fanta ou Sprite.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Refrigerante Lata" 
+                                    data-price="6.90"
+                                    data-id="drink-1">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Drink 2 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1561702482-2f0c5f3c58af?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Suco Natural" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Suco Natural</h3>
+                                <span class="text-lg font-bold text-primary">R$ 8,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">500ml - Laranja, Limão, Abacaxi com Hortelã ou Manga.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Suco Natural" 
+                                    data-price="8.90"
+                                    data-id="drink-2">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Drink 3 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1524230572899-a94f4ff5a819?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Água Mineral" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Água Mineral</h3>
+                                <span class="text-lg font-bold text-primary">R$ 4,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Garrafa 500ml - Com ou sem gás.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Água Mineral" 
+                                    data-price="4.90"
+                                    data-id="drink-3">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Desserts Category (Hidden by default) -->
+            <div id="desserts" class="menu-category hidden">
+                <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+                    <!-- Dessert 1 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1484723091739-30a097e8f929?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Brownie" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Brownie com Sorvete</h3>
+                                <span class="text-lg font-bold text-primary">R$ 14,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Brownie de chocolate quente com sorvete de creme e calda de chocolate.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Brownie com Sorvete" 
+                                    data-price="14.90"
+                                    data-id="dessert-1">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Dessert 2 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1592462787982-3fb6d33930c7?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Torta" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Torta de Limão</h3>
+                                <span class="text-lg font-bold text-primary">R$ 12,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">Fatia de torta de limão com base crocante de biscoito e chantilly.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Torta de Limão" 
+                                    data-price="12.90"
+                                    data-id="dessert-2">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Dessert 3 -->
+                    <div class="item-card bg-white rounded-xl shadow-md overflow-hidden transition cursor-pointer relative h-full">
+                        <div class="relative h-48 w-full">
+                            <img src="https://images.unsplash.com/photo-1571115177098-24ec42ed204d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Sorvete" class="w-full h-full object-cover">
+                        </div>
+                        <div class="p-6">
+                            <div class="flex justify-between items-start mb-2">
+                                <h3 class="text-xl font-bold">Sorvete Artesanal</h3>
+                                <span class="text-lg font-bold text-primary">R$ 11,90</span>
+                            </div>
+                            <p class="text-gray-600 mb-4">2 bolas de sorvete artesanal. Sabores: chocolate, creme, morango e flocos.</p>
+                            <button class="add-to-cart bg-primary hover:bg-orange-600 text-white font-bold py-2 px-4 rounded-full transition w-full" 
+                                    data-name="Sorvete Artesanal" 
+                                    data-price="11.90"
+                                    data-id="dessert-3">
+                                Adicionar ao Carrinho
+                            </button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- About Section -->
+    <section id="about" class="py-12 bg-white">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row items-center">
+                <div class="md:w-1/2 mb-8 md:mb-0 md:pr-8">
+                    <img src="https://images.unsplash.com/photo-1517248135467-4c7edcad34c4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80" alt="Restaurante" class="rounded-xl shadow-lg w-full">
+                </div>
+                <div class="md:w-1/2">
+                    <h2 class="text-3xl font-bold text-primary mb-6">Sobre Nós</h2>
+                    <p class="text-lg mb-4">Desde 2015, a BurgerMaster tem levado alegria às mesas através de hambúrgueres artesanais feitos com ingredientes de alta qualidade e muito amor.</p>
+                    <p class="text-lg mb-6">Nossa missão é simples: oferecer a melhor experiência gastronômica em hambúrgueres, com sabores autênticos e atendimento excepcional.</p>
+                    <div class="bg-primary/10 p-6 rounded-xl">
+                        <h3 class="text-xl font-bold text-primary mb-3">O que nos diferencia?</h3>
+                        <ul class="space-y-2">
+                            <li class="flex items-start">
+                                <span class="text-accent mr-2">✓</span>
+                                <span>Carnes selecionadas e moídas na hora</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-2">✓</span>
+                                <span>Pães frescos assados diariamente</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-2">✓</span>
+                                <span>Molhos e ingredientes especiais preparados na casa</span>
+                            </li>
+                            <li class="flex items-start">
+                                <span class="text-accent mr-2">✓</span>
+                                <span>Atendimento rápido e personalizado</span>
+                            </li>
+                        </ul>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Contact Section -->
+    <section id="contact" class="py-12 bg-gray-50">
+        <div class="container mx-auto px-4">
+            <h2 class="text-3xl font-bold text-center mb-12 text-primary">📞 Entre em Contato</h2>
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-12">
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-secondary">Informações</h3>
+                    <div class="space-y-6">
+                        <div class="flex items-start">
+                            <i class="fas fa-map-marker-alt text-primary mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold">Endereço</h4>
+                                <p>Rua dos Hambúrgueres, 123 - Bairro Delícia</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-phone-alt text-primary mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold">Telefone</h4>
+                                <p>(11) 9999-9999</p>
+                            </div>
+                        </div>
+                        <div class="flex items-start">
+                            <i class="fas fa-clock text-primary mt-1 mr-4"></i>
+                            <div>
+                                <h4 class="font-bold">Horário de Funcionamento</h4>
+                                <p>Terça a Domingo: 18h - 23h</p>
+                            </div>
+                        </div>
+                        <div class="flex items-center space-x-4">
+                            <a href="#" class="text-primary hover:text-secondary transition">
+                                <i class="fab fa-instagram text-2xl"></i>
+                            </a>
+                            <a href="#" class="text-primary hover:text-secondary transition">
+                                <i class="fab fa-facebook text-2xl"></i>
+                            </a>
+                            <a href="#" class="text-primary hover:text-secondary transition">
+                                <i class="fab fa-whatsapp text-2xl"></i>
+                            </a>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <h3 class="text-2xl font-bold mb-6 text-secondary">Mande uma Mensagem</h3>
+                    <form class="space-y-4">
+                        <div>
+                            <label for="name" class="block font-medium mb-1">Nome</label>
+                            <input type="text" id="name" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label for="email" class="block font-medium mb-1">E-mail</label>
+                            <input type="email" id="email" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary">
+                        </div>
+                        <div>
+                            <label for="message" class="block font-medium mb-1">Mensagem</label>
+                            <textarea id="message" rows="5" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary"></textarea>
+                        </div>
+                        <button type="submit" class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full transition">Enviar Mensagem</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer class="bg-dark text-white py-8">
+        <div class="container mx-auto px-4">
+            <div class="flex flex-col md:flex-row justify-between items-center">
+                <div class="mb-4 md:mb-0">
+                    <div class="flex items-center">
+                        <span class="text-3xl font-bold text-primary mr-1">🍔</span>
+                        <h2 class="text-2xl font-bold text-primary">Burger<span class="text-secondary">Master</span></h2>
+                    </div>
+                    <p class="mt-2 text-gray-400">Os melhores hambúrgueres artesanais da cidade</p>
+                </div>
+                <div class="flex space-x-6">
+                    <a href="#home" class="text-gray-400 hover:text-white transition">Início</a>
+                    <a href="#menu" class="text-gray-400 hover:text-white transition">Cardápio</a>
+                    <a href="#about" class="text-gray-400 hover:text-white transition">Sobre Nós</a>
+                    <a href="#contact" class="text-gray-400 hover:text-white transition">Contato</a>
+                </div>
+            </div>
+            <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400">
+                <p>&copy; 2023 BurgerMaster. Todos os direitos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <!-- Shopping Cart Sidebar -->
+    <div id="cart-sidebar" class="fixed top-0 right-0 h-full w-full md:w-96 bg-white shadow-xl transform translate-x-full transition-transform duration-300 ease-in-out z-50">
+        <div class="h-full flex flex-col">
+            <div class="p-6 border-b border-gray-200">
+                <div class="flex justify-between items-center">
+                    <h3 class="text-xl font-bold text-dark">Seu Carrinho</h3>
+                    <button id="close-cart" class="text-gray-500 hover:text-dark">
+                        <i class="fas fa-times text-xl"></i>
+                    </button>
+                </div>
+            </div>
+            
+            <div id="cart-items" class="flex-1 overflow-y-auto p-6">
+                <div id="empty-cart-message" class="text-center py-12">
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Seu carrinho está vazio</p>
+                    <a href="#menu" class="inline-block mt-4 bg-primary hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition">
+                        Ver Cardápio
+                    </a>
+                </div>
+                <!-- Cart items will be dynamically inserted here -->
+            </div>
+            
+            <div class="p-6 border-t border-gray-200">
+                <div class="flex justify-between mb-2">
+                    <span class="font-medium">Subtotal:</span>
+                    <span id="cart-subtotal" class="font-bold">R$ 0,00</span>
+                </div>
+                <div class="flex justify-between mb-4">
+                    <span class="font-medium">Taxa de Entrega:</span>
+                    <span id="delivery-fee" class="font-bold">R$ 5,00</span>
+                </div>
+                <div class="flex justify-between text-lg font-bold mb-6">
+                    <span>Total:</span>
+                    <span id="cart-total">R$ 5,00</span>
+                </div>
+                <button id="checkout-button" class="w-full bg-accent hover:bg-yellow-500 text-dark font-bold py-3 px-4 rounded-full transition">
+                    Finalizar Pedido via WhatsApp
+                </button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Item Customization Modal -->
+    <div id="customization-modal" class="fixed inset-0 bg-black bg-opacity-50 flex items-center justify-center z-50 hidden">
+        <div class="bg-white rounded-xl w-full max-w-md mx-4 max-h-[90vh] overflow-y-auto">
+            <div class="p-6">
+                <div class="flex justify-between items-center mb-4">
+                    <h3 id="customization-title" class="text-xl font-bold">Personalize seu pedido</h3>
+                    <button id="close-customization" class="text-gray-500 hover:text-dark">
+                        <i class="fas fa-times"></i>
+                    </button>
+                </div>
+                
+                <div id="custom-options" class="mb-6">
+                    <!-- Add-ons Section -->
+                    <div class="mb-6">
+                        <h4 class="font-bold mb-3">Adicionais</h4>
+                        <div class="space-y-3">
+                            <label class="flex items-center justify-between p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary option-checkbox" data-price="4.00">
+                                    <span class="ml-3">Bacon Extra (R$ 4,00)</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center justify-between p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary option-checkbox" data-price="3.50">
+                                    <span class="ml-3">Queijo Extra (R$ 3,50)</span>
+                                </div>
+                            </label>
+                            <label class="flex items-center justify-between p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary">
+                                <div class="flex items-center">
+                                    <input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary option-checkbox" data-price="2.50">
+                                    <span class="ml-3">Cebola Caramelizada (R$ 2,50)</span>
+                                </div>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Remove Section -->
+                    <div class="mb-6">
+                        <h4 class="font-bold mb-3">Remover Ingredientes</h4>
+                        <div class="space-y-3">
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary remove-option">
+                                <span class="ml-3">Sem Cebola</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary remove-option">
+                                <span class="ml-3">Sem Picles</span>
+                            </label>
+                            <label class="flex items-center p-3 border border-gray-200 rounded-lg cursor-pointer hover:border-primary">
+                                <input type="checkbox" class="form-checkbox h-5 w-5 text-primary border-gray-300 rounded focus:ring-primary remove-option">
+                                <span class="ml-3">Sem Molho</span>
+                            </label>
+                        </div>
+                    </div>
+                    
+                    <!-- Quantity Section -->
+                    <div class="mb-6">
+                        <h4 class="font-bold mb-3">Quantidade</h4>
+                        <div class="flex items-center">
+                            <button id="decrease-quantity" class="bg-gray-200 hover:bg-gray-300 text-dark font-bold py-2 px-4 rounded-l-full">
+                                <i class="fas fa-minus"></i>
+                            </button>
+                            <input id="custom-quantity" type="number" min="1" value="1" class="w-16 text-center border-t border-b border-gray-300 py-2">
+                            <button id="increase-quantity" class="bg-gray-200 hover:bg-gray-300 text-dark font-bold py-2 px-4 rounded-r-full">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <!-- Notes Section -->
+                    <div>
+                        <h4 class="font-bold mb-3">Observações</h4>
+                        <textarea id="custom-notes" class="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-primary" placeholder="Alguma observação especial?"></textarea>
+                    </div>
+                </div>
+                
+                <div class="flex justify-between items-center border-t border-gray-200 pt-4">
+                    <div>
+                        <span class="block text-sm text-gray-500">Total do Item</span>
+                        <span id="custom-item-total" class="text-xl font-bold text-primary">R$ 32,90</span>
+                    </div>
+                    <button id="add-custom-item" class="bg-primary hover:bg-orange-600 text-white font-bold py-3 px-6 rounded-full transition">
+                        Adicionar ao Carrinho
+                    </button>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- Backdrop for modals -->
+    <div id="backdrop" class="fixed inset-0 bg-black bg-opacity-50 z-40 hidden"></div>
+
+    <script>
+        // Mobile menu toggle
+        const mobileMenuButton = document.getElementById('mobile-menu-button');
+        const mobileMenu = document.getElementById('mobile-menu');
+        
+        mobileMenuButton.addEventListener('click', () => {
+            mobileMenu.classList.toggle('hidden');
+        });
+        
+        // Menu category switching
+        const categoryButtons = document.querySelectorAll('.category-btn');
+        const menuCategories = document.querySelectorAll('.menu-category');
+        
+        categoryButtons.forEach(button => {
+            button.addEventListener('click', () => {
+                // Update button styles
+                categoryButtons.forEach(btn => {
+                    btn.classList.remove('bg-primary', 'text-white');
+                    btn.classList.add('bg-gray-200');
+                });
+                button.classList.remove('bg-gray-200');
+                button.classList.add('bg-primary', 'text-white');
+                
+                // Show selected category
+                const category = button.dataset.category;
+                menuCategories.forEach(cat => {
+                    cat.classList.add('hidden');
+                    if (cat.id === category) {
+                        cat.classList.remove('hidden');
+                    }
+                });
+            });
+        });
+        
+        // Cart functionality
+        const cartButton = document.getElementById('cart-button');
+        const cartSidebar = document.getElementById('cart-sidebar');
+        const closeCart = document.getElementById('close-cart');
+        const backdrop = document.getElementById('backdrop');
+        
+        let cart = JSON.parse(localStorage.getItem('cart')) || [];
+        const deliveryFee = 5.00;
+        
+        function updateCartCount() {
+            const count = cart.reduce((total, item) => total + item.quantity, 0);
+            document.getElementById('cart-count').textContent = count;
+        }
+        
+        function updateCartDisplay() {
+            const cartItemsContainer = document.getElementById('cart-items');
+            const emptyCartMessage = document.getElementById('empty-cart-message');
+            const checkoutButton = document.getElementById('checkout-button');
+            
+            if (cart.length === 0) {
+                cartItemsContainer.innerHTML = `<div id="empty-cart-message" class="text-center py-12">
+                    <i class="fas fa-shopping-cart text-4xl text-gray-300 mb-4"></i>
+                    <p class="text-gray-500">Seu carrinho está vazio</p>
+                    <a href="#menu" class="inline-block mt-4 bg-primary hover:bg-orange-600 text-white font-bold py-2 px-6 rounded-full transition">
+                        Ver Cardápio
+                    </a>
+                </div>`;
+                checkoutButton.disabled = true;
+                return;
+            } else {
+                emptyCartMessage?.remove();
+                checkoutButton.disabled = false;
+            }
+            
+            let subtotal = 0;
+            cartItemsContainer.innerHTML = '';
+            
+            cart.forEach((item, index) => {
+                subtotal += item.price * item.quantity;
+                
+                const itemElement = document.createElement('div');
+                itemElement.className = 'cart-item-enter flex flex-col border-b border-gray-200 pb-4 mb-4';
+                itemElement.innerHTML = `
+                    <div class="flex justify-between mb-2">
+                        <h4 class="font-bold">${item.name}</h4>
+                        <span class="text-primary font-bold">R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}</span>
+                    </div>
+                    ${item.addons.length > 0 ? `<p class="text-sm text-gray-500 mb-1">Adicionais: ${item.addons.join(', ')}</p>` : ''}
+                    ${item.removals.length > 0 ? `<p class="text-sm text-gray-500 mb-1">Sem: ${item.removals.join(', ')}</p>` : ''}
+                    ${item.notes ? `<p class="text-sm text-gray-500 mb-2">Obs: ${item.notes}</p>` : ''}
+                    <div class="flex justify-between items-center">
+                        <div class="flex items-center">
+                            <button class="decrease-quantity bg-gray-200 hover:bg-gray-300 text-dark font-bold py-1 px-3 rounded-l-full" data-index="${index}">
+                                <i class="fas fa-minus text-xs"></i>
+                            </button>
+                            <span class="quantity-display mx-2">${item.quantity}</span>
+                            <button class="increase-quantity bg-gray-200 hover:bg-gray-300 text-dark font-bold py-1 px-3 rounded-r-full" data-index="${index}">
+                                <i class="fas fa-plus text-xs"></i>
+                            </button>
+                        </div>
+                        <button class="remove-item text-red-500 hover:text-red-700" data-index="${index}">
+                            <i class="fas fa-trash"></i>
+                        </button>
+                    </div>
+                `;
+                
+                cartItemsContainer.appendChild(itemElement);
+            });
+            
+            // Update subtotal and total
+            document.getElementById('cart-subtotal').textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+            const total = subtotal + deliveryFee;
+            document.getElementById('cart-total').textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+            
+            // Save to localStorage
+            localStorage.setItem('cart', JSON.stringify(cart));
+            
+            // Bind events to new cart item buttons
+            bindCartItemEvents();
+        }
+        
+        function bindCartItemEvents() {
+            // Quantity decrease
+            document.querySelectorAll('.decrease-quantity').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    if (cart[index].quantity > 1) {
+                        cart[index].quantity--;
+                        updateCartDisplay();
+                        updateCartCount();
+                    }
+                });
+            });
+            
+            // Quantity increase
+            document.querySelectorAll('.increase-quantity').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    cart[index].quantity++;
+                    updateCartDisplay();
+                    updateCartCount();
+                });
+            });
+            
+            // Remove item
+            document.querySelectorAll('.remove-item').forEach(button => {
+                button.addEventListener('click', function() {
+                    const index = parseInt(this.dataset.index);
+                    // Add animation class before removing
+                    const itemElement = this.closest('.cart-item-enter');
+                    itemElement.classList.remove('cart-item-enter');
+                    itemElement.classList.add('cart-item-exit');
+                    
+                    setTimeout(() => {
+                        cart.splice(index, 1);
+                        updateCartDisplay();
+                        updateCartCount();
+                    }, 300);
+                });
+            });
+        }
+        
+        // Simple add to cart for non-customizable items
+        document.querySelectorAll('.add-to-cart:not([onclick])').forEach(button => {
+            button.addEventListener('click', function() {
+                const name = this.dataset.name;
+                const price = parseFloat(this.dataset.price);
+                const id = this.dataset.id;
+                
+                // Check if item already exists in cart
+                const existingIndex = cart.findIndex(item => item.id === id && 
+                    item.addons.length === 0 && item.removals.length === 0 && !item.notes);
+                
+                if (existingIndex >= 0) {
+                    cart[existingIndex].quantity++;
+                } else {
+                    cart.push({
+                        id,
+                        name,
+                        price,
+                        quantity: 1,
+                        addons: [],
+                        removals: [],
+                        notes: ''
+                    });
+                }
+                
+                updateCartDisplay();
+                updateCartCount();
+                
+                // Show cart sidebar
+                cartSidebar.classList.remove('translate-x-full');
+                backdrop.classList.remove('hidden');
+                
+                // Add to cart animation
+                const buttonRect = this.getBoundingClientRect();
+                const cartIconRect = cartButton.getBoundingClientRect();
+                
+                const animationElement = document.createElement('div');
+                animationElement.className = 'fixed w-4 h-4 bg-primary rounded-full pointer-events-none z-50';
+                animationElement.style.left = `${buttonRect.left + buttonRect.width/2}px`;
+                animationElement.style.top = `${buttonRect.top}px`;
+                document.body.appendChild(animationElement);
+                
+                const animation = animationElement.animate([
+                    { 
+                        left: `${buttonRect.left + buttonRect.width/2}px`,
+                        top: `${buttonRect.top}px`,
+                        opacity: 1,
+                        transform: 'scale(1)'
+                    },
+                    { 
+                        left: `${cartIconRect.left + cartIconRect.width/2}px`,
+                        top: `${cartIconRect.top + cartIconRect.height/2}px`,
+                        opacity: 0,
+                        transform: 'scale(0.5)'
+                    }
+                ], {
+                    duration: 500,
+                    easing: 'cubic-bezier(0.4, 0, 0.2, 1)'
+                });
+                
+                animation.onfinish = () => {
+                    animationElement.remove();
+                };
+            });
+        });
+        
+        // Cart sidebar and checkout
+        cartButton.addEventListener('click', () => {
+            cartSidebar.classList.remove('translate-x-full');
+            backdrop.classList.remove('hidden');
+        });
+        
+        closeCart.addEventListener('click', () => {
+            cartSidebar.classList.add('translate-x-full');
+            backdrop.classList.add('hidden');
+        });
+        
+        backdrop.addEventListener('click', () => {
+            cartSidebar.classList.add('translate-x-full');
+            backdrop.classList.add('hidden');
+            customizationModal.classList.add('hidden');
+        });
+        
+        document.getElementById('checkout-button').addEventListener('click', () => {
+            if (cart.length === 0) return;
+            
+            // Prepare WhatsApp message
+            let message = "Olá BurgerMaster! Gostaria de fazer o seguinte pedido:\n\n";
+            
+            cart.forEach(item => {
+                message += `• ${item.name} (x${item.quantity}) - R$ ${(item.price * item.quantity).toFixed(2).replace('.', ',')}`;
+                
+                if (item.addons.length > 0) {
+                    message += `\n   Adicionais: ${item.addons.join(', ')}`;
+                }
+                
+                if (item.removals.length > 0) {
+                    message += `\n   Sem: ${item.removals.join(', ')}`;
+                }
+                
+                if (item.notes) {
+                    message += `\n   Obs: ${item.notes}`;
+                }
+                
+                message += "\n\n";
+            });
+            
+            const subtotal = cart.reduce((total, item) => total + (item.price * item.quantity), 0);
+            const total = subtotal + deliveryFee;
+            
+            message += `Subtotal: R$ ${subtotal.toFixed(2).replace('.', ',')}\n`;
+            message += `Taxa de entrega: R$ ${deliveryFee.toFixed(2).replace('.', ',')}\n`;
+            message += `Total: R$ ${total.toFixed(2).replace('.', ',')}\n\n`;
+            message += "Qual o prazo para entrega?";
+            
+            // Encode message for URL
+            const encodedMessage = encodeURIComponent(message);
+            
+            // Open WhatsApp with the message
+            window.open(`https://wa.me/5511999999999?text=${encodedMessage}`, '_blank');
+        });
+        
+        // Item customization modal
+        const customizationModal = document.getElementById('customization-modal');
+        const closeCustomization = document.getElementById('close-customization');
+        let currentCustomItem = null;
+        let currentBasePrice = 0;
+        
+        function openCustomizationModal(itemId) {
+            const itemButton = document.querySelector(`.add-to-cart[data-id="${itemId}"]`);
+            const itemName = itemButton.dataset.name;
+            currentBasePrice = parseFloat(itemButton.dataset.price);
+            currentCustomItem = itemButton.dataset.id;
+            
+            document.getElementById('customization-title').textContent = `Personalizar ${itemName}`;
+            document.getElementById('custom-item-total').textContent = `R$ ${currentBasePrice.toFixed(2).replace('.', ',')}`;
+            
+            // Reset modal state
+            document.querySelectorAll('.option-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.querySelectorAll('.remove-option').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('custom-quantity').value = 1;
+            document.getElementById('custom-notes').value = '';
+            
+            customizationModal.classList.remove('hidden');
+            backdrop.classList.remove('hidden');
+        }
+        
+        closeCustomization.addEventListener('click', () => {
+            customizationModal.classList.add('hidden');
+            backdrop.classList.add('hidden');
+        });
+        
+        // Quantity controls in modal
+        document.getElementById('increase-quantity').addEventListener('click', () => {
+            const quantityInput = document.getElementById('custom-quantity');
+            quantityInput.value = parseInt(quantityInput.value) + 1;
+            updateCustomItemTotal();
+        });
+        
+        document.getElementById('decrease-quantity').addEventListener('click', () => {
+            const quantityInput = document.getElementById('custom-quantity');
+            if (parseInt(quantityInput.value) > 1) {
+                quantityInput.value = parseInt(quantityInput.value) - 1;
+                updateCustomItemTotal();
+            }
+        });
+        
+        document.getElementById('custom-quantity').addEventListener('change', updateCustomItemTotal);
+        
+        // Update price when options change
+        document.querySelectorAll('.option-checkbox, .remove-option').forEach(checkbox => {
+            checkbox.addEventListener('change', updateCustomItemTotal);
+        });
+        
+        function updateCustomItemTotal() {
+            let total = currentBasePrice;
+            let quantity = parseInt(document.getElementById('custom-quantity').value) || 1;
+            
+            // Add add-ons prices
+            document.querySelectorAll('.option-checkbox:checked').forEach(checkbox => {
+                total += parseFloat(checkbox.dataset.price);
+            });
+            
+            document.getElementById('custom-item-total').textContent = `R$ ${(total * quantity).toFixed(2).replace('.', ',')}`;
+        }
+        
+        // Add customized item to cart
+        document.getElementById('add-custom-item').addEventListener('click', () => {
+            const quantity = parseInt(document.getElementById('custom-quantity').value) || 1;
+            const notes = document.getElementById('custom-notes').value;
+            
+            // Get selected add-ons
+            const addons = [];
+            document.querySelectorAll('.option-checkbox:checked').forEach(checkbox => {
+                const addonName = checkbox.parentElement.textContent.trim().split('(')[0].trim();
+                addons.push(addonName);
+            });
+            
+            // Get selected removals
+            const removals = [];
+            document.querySelectorAll('.remove-option:checked').forEach(checkbox => {
+                const removalName = checkbox.parentElement.textContent.trim();
+                removals.push(removalName);
+            });
+            
+            // Calculate final price
+            let itemPrice = currentBasePrice;
+            document.querySelectorAll('.option-checkbox:checked').forEach(checkbox => {
+                itemPrice += parseFloat(checkbox.dataset.price);
+            });
+            
+            // Check if identical item already exists in cart
+            const existingIndex = cart.findIndex(item => 
+                item.id === currentCustomItem &&
+                JSON.stringify(item.addons) === JSON.stringify(addons) &&
+                JSON.stringify(item.removals) === JSON.stringify(removals) &&
+                item.notes === notes
+            );
+            
+            if (existingIndex >= 0) {
+                cart[existingIndex].quantity += quantity;
+            } else {
+                const itemButton = document.querySelector(`.add-to-cart[data-id="${currentCustomItem}"]`);
+                
+                cart.push({
+                    id: currentCustomItem,
+                    name: itemButton.dataset.name,
+                    price: itemPrice,
+                    quantity: quantity,
+                    addons: addons,
+                    removals: removals,
+                    notes: notes
+                });
+            }
+            
+            updateCartDisplay();
+            updateCartCount();
+            
+            // Close modal and show cart
+            customizationModal.classList.add('hidden');
+            backdrop.classList.add('hidden');
+            cartSidebar.classList.remove('translate-x-full');
+            
+            // Reset modal
+            document.querySelectorAll('.option-checkbox').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.querySelectorAll('.remove-option').forEach(checkbox => {
+                checkbox.checked = false;
+            });
+            document.getElementById('custom-quantity').value = 1;
+            document.getElementById('custom-notes').value = '';
+        });
+        
+        // Initialize cart on page load
+        document.addEventListener('DOMContentLoaded', () => {
+            updateCartDisplay();
+            updateCartCount();
+        });
+    </script>
+</body>
+</html>
